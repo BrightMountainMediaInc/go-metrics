@@ -148,12 +148,20 @@ func formatSamples(source map[string]SampledValue) []SampledValue {
 		}
 
 		output = append(output, SampledValue{
-			Name:            sample.Name,
-			Hash:            hash,
-			AggregateSample: sample.AggregateSample,
-			Mean:            sample.AggregateSample.Mean(),
-			Stddev:          sample.AggregateSample.Stddev(),
-			DisplayLabels:   displayLabels,
+			Name: sample.Name,
+			Hash: hash,
+			AggregateSample: &AggregateSample{
+				Count:       sample.AggregateSample.Count,
+				Rate:        sample.AggregateSample.Rate,
+				Sum:         sample.AggregateSample.Sum,
+				SumSq:       sample.AggregateSample.SumSq,
+				Min:         sample.AggregateSample.Min,
+				Max:         sample.AggregateSample.Max,
+				LastUpdated: sample.AggregateSample.LastUpdated,
+			},
+			Mean:          sample.AggregateSample.Mean(),
+			Stddev:        sample.AggregateSample.Stddev(),
+			DisplayLabels: displayLabels,
 		})
 	}
 	sort.Slice(output, func(i, j int) bool {
